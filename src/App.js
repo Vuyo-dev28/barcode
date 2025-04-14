@@ -132,7 +132,7 @@ const BarcodeGenerator = () => {
             height={50}
             ref={(el) => (barcodeRefs.current[index * 2] = el?.svg)}
           />
-          <div className="description">{item.description}</div>
+          {/* <div className="description">{item.description}</div> */}
         </div>
         <div className="barcode-box">
           <Barcode
