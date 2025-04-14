@@ -6,6 +6,8 @@ import './App.css';
 
 const BarcodeGenerator = () => {
   const [serialNumbers, setSerialNumbers] = useState([]);
+  const [manualSerial, setManualSerial] = useState("");
+  const [manualBarcode, setManualBarcode] = useState(null);
   const barcodeRefs = useRef([]);
 
   const handleFileUpload = (event) => {
@@ -33,6 +35,11 @@ const BarcodeGenerator = () => {
     reader.readAsArrayBuffer(file);
   };
 
+  const handleManualAdd = () => {
+    if (manualSerial.trim() === "") return;
+    setManualBarcode(manualSerial.trim());
+  };
+
   const generatePDF = () => {
     const doc = new jsPDF();
     const rowHeight = 70;
@@ -57,13 +64,9 @@ const BarcodeGenerator = () => {
           const imgData1 = await getImageData(barcode1El);
           const imgData2 = await getImageData(barcode2El);
 
-          // Add Barcode 1 to the PDF
           if (imgData1) doc.addImage(imgData1, "PNG", x, y, 90, 30);
-
-          // Add Barcode 2 to the PDF, 35px below the first barcode
           if (imgData2) doc.addImage(imgData2, "PNG", x, y + 35, 90, 30);
 
-          // Add description under Barcode 2
           const textX = x + 2;
           const textY = y + 70;
           if (item.description) {
@@ -79,7 +82,6 @@ const BarcodeGenerator = () => {
     });
   };
 
-  // Helper function to convert barcode SVG to PNG image
   const getImageData = (barcodeEl) => {
     return new Promise((resolve) => {
       if (!barcodeEl) return resolve(null);
@@ -100,56 +102,78 @@ const BarcodeGenerator = () => {
 
   return (
     <div className="app-container">
-  <h1>Barcode Generator</h1>
+      <h1>Barcode Generator</h1>
+      <p> Bar Code Type: CODE39</p>
 
-  {/* File input hidden */}
-  <input
-    type="file"
-    id="file-upload"
-    accept=".xlsx, .xls"
-    onChange={handleFileUpload}
-  />
-  {/* Custom file input label */}
-  <label htmlFor="file-upload" className="file-upload-label">
-    Choose File
-  </label>
+      {/* File upload */}
+      <input
+        type="file"
+        id="file-upload"
+        accept=".xlsx, .xls"
+        onChange={handleFileUpload}
+      />
+      <label htmlFor="file-upload" className="file-upload-label">
+        Choose File
+      </label>
 
-  {/* Button to download PDF */}
-  {serialNumbers.length > 0 && (
-    <button onClick={generatePDF}>Download Barcodes as PDF</button>
-  )}
-
-  {/* Barcode Display */}
-  <div className="barcode-grid">
-    {serialNumbers.map((item, index) => (
-      <div className="barcode-row" key={index}>
-        <div className="barcode-box">
-          <Barcode
-            value={item.barcode1}
-            format="CODE39"
-            displayValue={true}
-            width={1.5}
-            height={50}
-            ref={(el) => (barcodeRefs.current[index * 2] = el?.svg)}
-          />
-          {/* <div className="description">{item.description}</div> */}
-        </div>
-        <div className="barcode-box">
-          <Barcode
-            value={item.barcode2}
-            format="CODE39"
-            displayValue={true}
-            width={1.5}
-            height={50}
-            ref={(el) => (barcodeRefs.current[index * 2 + 1] = el?.svg)}
-          />
-          <div className="description">{item.description}</div>
-        </div>
+      {/* Manual serial input */}
+      <div className="manual-entry">
+        <input
+          type="text"
+          placeholder="Enter serial code manually "
+          value={manualSerial}
+          onChange={(e) => setManualSerial(e.target.value)}
+        />
+        <button onClick={handleManualAdd}>Generate Barcode</button>
       </div>
-    ))}
-  </div>
-</div>
 
+      {/* Show manual barcode if available */}
+      {manualBarcode && (
+        <div className="manual-barcode-preview">
+          <Barcode
+            value={manualBarcode}
+            format="CODE39"
+            displayValue={true}
+            width={1.5}
+            height={50}
+          />
+        </div>
+      )}
+
+      {/* Download button */}
+      {serialNumbers.length > 0 && (
+        <button onClick={generatePDF}>Download Barcodes as PDF</button>
+      )}
+
+      {/* Display barcodes from Excel */}
+      <div className="barcode-grid">
+        {serialNumbers.map((item, index) => (
+          <div className="barcode-row" key={index}>
+            <div className="barcode-box">
+              <Barcode
+                value={item.barcode1}
+                format="CODE39"
+                displayValue={true}
+                width={1.5}
+                height={50}
+                ref={(el) => (barcodeRefs.current[index * 2] = el?.svg)}
+              />
+            </div>
+            <div className="barcode-box">
+              <Barcode
+                value={item.barcode2}
+                format="CODE39"
+                displayValue={true}
+                width={1.5}
+                height={50}
+                ref={(el) => (barcodeRefs.current[index * 2 + 1] = el?.svg)}
+              />
+              <div className="description">{item.description}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

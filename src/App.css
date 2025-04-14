@@ -8,11 +8,40 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Title Styling */
 h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: 48px;
+  font-weight: 800;
+  color: #1d4ed8;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  text-align: center;
+  background-image: linear-gradient(135deg, #1d4ed8, #2563eb, #4f46e5);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: glow 1.5s ease-in-out infinite alternate;
+  margin-bottom: 2rem;
 }
+
+p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4f46e5;
+  text-align: center;
+  background-image: linear-gradient(45deg, #4f46e5, #1d4ed8, #2563eb);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: 2px;
+  padding: 2px;
+  /* display: inline-block; */
+  margin: 20px 0;
+  /* border-radius: 8px; */
+  /* box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); */
+  animation: pulse 1s ease-in-out infinite;
+}
+
 
 input[type="file"] {
   margin-bottom: 1rem;
@@ -80,7 +109,7 @@ button:active {
 
 /* File Input Styling */
 input[type="file"] {
-  display: none; /* Hide the default file input */
+  display: none; /* Hide the default Afile input */
 }
 
 .file-upload-label {
@@ -106,3 +135,28 @@ input[type="file"] {
   transform: translateY(1px);
 }
 
+/* Manual Entry Styling */
+/* Manual Entry Styling */
+.manual-entry {
+  margin: 2rem 0;
+  display: block; /* Change to block layout */
+  width: 100%; /* Make it take full width */
+  text-align: center; /* Center the input fields */
+}
+
+.manual-entry input {
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  width: 100%; /* Make inputs take full width */
+  max-width: 400px; /* Limit max width for inputs */
+  margin-bottom: 1rem; /* Add spacing between inputs */
+  transition: border 0.3s ease;
+}
+
+
+.manual-entry input:focus {
+  border-color: #2563eb;
+}
