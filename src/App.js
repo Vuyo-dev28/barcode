@@ -104,6 +104,7 @@ const BarcodeGenerator = () => {
     <div className="app-container">
       <h1>Barcode Generator</h1>
       <p> Bar Code Type: CODE39</p>
+      <p> Dev By Vuyo Mbanjwa </p>
 
       {/* File upload */}
       <input
